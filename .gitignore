@@ -6,4 +6,5 @@ composer.phar
 # composer.lock
 
 .ignore/
+output/
 polskie/projects/

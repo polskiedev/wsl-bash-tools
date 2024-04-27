@@ -1,0 +1,42 @@
+#!/bin/bash
+
+current_date_time=$(date +"%A, %b %d, %Y %I:%M %p")
+echo "[🔥😆 |💀👻 |✨🧙 |⚛ 🤖]:💻 @ $current_date_time"
+
+# Source .env file to load variables
+env_file="$HOME/polskie/.env"
+if [ -f $env_file ]; then
+    source $env_file
+fi
+
+#Required for setup
+source ~/polskie/variables.sh
+source ~/polskie/logs.sh
+source ~/polskie/alias.sh
+source ~/polskie/utils.sh
+
+#Git Utils
+source ~/polskie/greset.sh
+source ~/polskie/gb.sh
+source ~/polskie/gadd.sh
+source ~/polskie/gcommit.sh
+source ~/polskie/gmerge.sh
+
+# ##########################################################
+
+projects_setup_file="$HOME/polskie/projects/projects.sh"
+writefile="$HOME/polskie/project_scripts.txt"
+
+log_verbose "Checking projects..."
+if [ -f $projects_setup_file ]; then
+    log_verbose "Loading projects: $projects_setup_file"
+    . $projects_setup_file "$writefile"
+fi
+
+while IFS= read -r script; do
+    log_verbose "Add Source: '$script'"
+    source "$script"
+done < "$writefile"
+
+alias sp='source ~/polskie/.bash_polskie'
+alias spe='nano ~/polskie/.bash_polskie'

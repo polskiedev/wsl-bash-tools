@@ -23,7 +23,7 @@ source ~/polskie/gcommit.sh
 source ~/polskie/gmerge.sh
 
 # ##########################################################
-
+# Load project scripts
 projects_setup_file="$HOME/polskie/projects/projects.sh"
 writefile="$HOME/polskie/project_scripts.txt"
 
@@ -38,5 +38,12 @@ while IFS= read -r script; do
     source "$script"
 done < "$writefile"
 
+# ##########################################################
+# Get script output
+log_verbose "Copy output: " "$writefile" "$HOME/wsl-bash-tools/output/"
+cp "$writefile" "$HOME/wsl-bash-tools/output/"
+
+# ##########################################################
+# Quick helper
 alias sp='source ~/polskie/.bash_polskie'
 alias spe='nano ~/polskie/.bash_polskie'

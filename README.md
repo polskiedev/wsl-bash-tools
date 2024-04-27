@@ -1,2 +1,2 @@
 # wsl-bash-tools
-Polskie WSL Helper
+Polskie WSL Bash Tools

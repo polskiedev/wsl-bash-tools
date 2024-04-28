@@ -1,13 +1,16 @@
 #!/bin/bash
 
 current_date_time=$(date +"%A, %b %d, %Y %I:%M %p")
-echo "[🔥😆 |💀👻 |✨🧙 |⚛ 🤖]:💻 @ $current_date_time"
+env_file="$HOME/polskie/.env"
 
 # Source .env file to load variables
-env_file="$HOME/polskie/.env"
+env_text=""
 if [ -f $env_file ]; then
+    env_text=" + 🍄 "
     source $env_file
 fi
+
+echo "[🔥😆 |💀👻 |✨🧙 |⚛ 🤖]: 💻 $env_text @ $current_date_time"
 
 #Required for setup
 source ~/polskie/variables.sh

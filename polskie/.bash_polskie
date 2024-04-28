@@ -1,7 +1,7 @@
 #!/bin/bash
 
 current_date_time=$(date +"%A, %b %d, %Y %I:%M %p")
-env_file="$HOME/polskie/.env"
+env_file="$HOME/polskie/local.env"
 
 # Source .env file to load variables
 env_text=""

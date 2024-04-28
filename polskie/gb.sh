@@ -7,9 +7,12 @@ function gb() {
         if [ -n "$1" ]; then
                 gfp
 
-                branchName=$1
+                local branchName=$1
+                local output
+                local line_count
+
                 if [[ "$1" =~ ^[0-9]{1,6}$ ]]; then
-                        branchName="NB-$1"
+                        branchName="$POLSKIE_BRANCH_PREFIX-$1"
                         log_info "Converting '$1' to '$branchName'"
                 fi
                 

@@ -34,8 +34,10 @@ if [ -f $projects_setup_file ]; then
 fi
 
 while IFS= read -r script; do
-    log_verbose "Add Source: '$script'"
-    source "$script"
+    if [ -f $projects_setup_file ]; then
+        log_verbose "Add Source: '$script'"
+        source "$script"
+    fi
 done < "$writefile"
 
 # ##########################################################

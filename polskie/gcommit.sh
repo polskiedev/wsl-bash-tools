@@ -4,7 +4,7 @@ function gcommit() {
     local msg
     local current_ticket_no
     local current_ticket_no2
-    local regex="[[:alnum:]]{3,}-[0-9]{1,6}"
+    local regex="[[:alnum:]]{2,}-[0-9]{1,6}"
 
     current_branch=$(git branch --show-current)
     log_info "Current Branch: \"$current_branch\""
@@ -22,7 +22,7 @@ function gcommit() {
     else
         read -p "Enter the ticket number: " ticket_number
 
-        if [[ "$ticket_number" =~ ^[[:alnum:]]{3,}-[0-9]{1,6}$ ]]; then
+        if [[ "$ticket_number" =~ ^[[:alnum:]]{2,}-[0-9]{1,6}$ ]]; then
             msg="$ticket_number: $1"
             current_ticket_no="$ticket_number"
         elif [[ "$ticket_number" =~ ^[0-9]{1,6}$ ]]; then

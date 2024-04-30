@@ -12,7 +12,7 @@ function gmerge() {
     local branch1="$1"
     local branch2="$2"
 
-    if [ "$branch1" = "<current>" ]; then
+    if [ "$branch1" = "[current]" ] || [ "$branch1" = "[me]" ]; then
         branch1=$(git branch --show-current)
         log_info "New Branch is set to '$branch1'."
     fi

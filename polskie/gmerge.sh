@@ -12,6 +12,11 @@ function gmerge() {
     local branch1="$1"
     local branch2="$2"
 
+    if [ "$branch1" = "<current>" ]; then
+        branch1=$(git branch --show-current)
+        log_info "New Branch is set to '$branch1'."
+    fi
+
     if ! git rev-parse --quiet --verify "$branch1" > /dev/null; then
         log_error "New Branch '$branch1' does not exist."
         return 1

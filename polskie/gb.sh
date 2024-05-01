@@ -37,6 +37,10 @@ function gbs() {
             log_info "Checking out saved branch: '$POLSKIE_SAVED_BRANCH'"
             gb "$POLSKIE_SAVED_BRANCH"
         fi
+    elif [ "$1" == "-s" ]; then
+        if [ -n "$POLSKIE_SAVED_BRANCH" ]; then
+            log_info "Saved branch: '$POLSKIE_SAVED_BRANCH'"
+        fi
     else
         log_info "Saving branch: '$(git branch --show-current)'"
         POLSKIE_SAVED_BRANCH=$(git branch --show-current)

@@ -46,3 +46,37 @@ function gbs() {
         POLSKIE_SAVED_BRANCH=$(git branch --show-current)
     fi
 }
+
+function gbs2() {
+    local file
+    local file_path
+    local ext=".txt"
+    local branch
+
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        file=$(git rev-parse --show-toplevel | xargs basename)
+        file+=$ext
+
+        log_verbose "Current directory is inside a Git repository.${file}"
+
+        file_path="$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE/${file}"
+
+        if [[ -f "$file_path" ]]; then
+            log_verbose "File exists: $file_path"
+        else
+            log_verbose "File does not exist: $file_path"
+            log_verbose "Creating file: ${file}"
+            touch $file_path
+        fi
+
+        branch=$(git branch --show-current)
+
+        textman_save_text "$file_path" "$branch"
+    else
+        log_info "Current directory is not inside a Git repository."
+    fi
+
+    if [ "$1" == "-s" ]; then
+        textman_choose_text "$file_path"
+    fi
+}

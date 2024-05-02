@@ -17,6 +17,7 @@ source ~/polskie/variables.sh
 source ~/polskie/logs.sh
 source ~/polskie/alias.sh
 source ~/polskie/utils.sh
+source ~/polskie/textman.sh
 
 #Git Utils
 source ~/polskie/greset.sh

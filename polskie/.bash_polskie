@@ -49,15 +49,6 @@ done < "$writefile"
 log_verbose "Copy output: " "$writefile" "$HOME/wsl-bash-tools/output/"
 cp "$writefile" "$HOME/wsl-bash-tools/output/"
 # ##########################################################
-if [[ -d "$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE" ]]; then
-    log_verbose "Save repository branches directory found."
-else
-    currdir="$PWD"
-    mkdir "$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE"
-    log_verbose "Folder repository branches directory created."
-    cd "$currdir"
-fi
-# ##########################################################
 # Quick helper
 alias sp='source ~/polskie/.bash_polskie'
 alias spe='nano ~/polskie/.bash_polskie'

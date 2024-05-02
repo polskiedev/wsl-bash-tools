@@ -12,9 +12,9 @@ textman_choose_text() {
 
     read -p "Choose an index: " choice
     if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 )) && (( choice <= ${#texts[@]} )); then
-        echo "You chose index $choice: ${texts[choice-1]}"
+        log_info "You chose index $choice: ${texts[choice-1]}"
     else
-        echo "Invalid choice."
+        log_info "Invalid choice."
     fi
 }
 
@@ -25,9 +25,9 @@ textman_save_text() {
 
     if ! grep -qF "$text" "$file"; then
         echo "$text" >> "$file"
-        echo "Text '$text' added to '$file'."
+        log_info "Text '$text' added to '$file'."
     else
-        echo "Text '$text' already exists in '$file'."
+        log_verbose "Text '$text' already exists in '$file'."
     fi
 }
 
@@ -37,9 +37,9 @@ textman_remove_text() {
 
     if grep -qF "$text_to_remove" "$file"; then
         sed -i "/$text_to_remove/d" "$file"
-        echo "Text '$text_to_remove' removed from '$file'."
+        log_info "Text '$text_to_remove' removed from '$file'."
     else
-        echo "Text '$text_to_remove' not found in '$file'."
+        log_verbose "Text '$text_to_remove' not found in '$file'."
     fi
 }
 

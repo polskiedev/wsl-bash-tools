@@ -32,6 +32,8 @@ function gb() {
 }
 
 function gbs() {
+    gbs2
+
     if [ "$1" == "-b" ]; then
         if [ -n "$POLSKIE_SAVED_BRANCH" ]; then
             log_info "Checking out saved branch: '$POLSKIE_SAVED_BRANCH'"
@@ -53,6 +55,15 @@ function gbs2() {
     local ext=".txt"
     local branch
 
+    if [[ -d "$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE" ]]; then
+        log_verbose "Save repository branches directory found."
+    else
+        currdir="$PWD"
+        mkdir "$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE"
+        log_verbose "Folder repository branches directory created."
+        cd "$currdir"
+    fi
+
     if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
         file=$(git rev-parse --show-toplevel | xargs basename)
         file+=$ext
@@ -73,7 +84,7 @@ function gbs2() {
 
         textman_save_text "$file_path" "$branch"
     else
-        log_info "Current directory is not inside a Git repository."
+        log_verbose "Current directory is not inside a Git repository."
     fi
 
     if [ "$1" == "-s" ]; then

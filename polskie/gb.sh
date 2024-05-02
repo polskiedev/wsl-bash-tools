@@ -59,7 +59,7 @@ function gbs2() {
 
         log_verbose "Current directory is inside a Git repository.${file}"
 
-        file_path="$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE/${file}"
+        file_path="$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE/${file}"
 
         if [[ -f "$file_path" ]]; then
             log_verbose "File exists: $file_path"

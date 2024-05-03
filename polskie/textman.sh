@@ -1,5 +1,35 @@
 #!/bin/bash
 
+textman_count_text() {
+    local file="$1"
+    local texts=($(<"$file"))
+
+    echo "${#texts[@]}"
+}
+
+textman_show_text() {
+    local file="$1"
+    local texts=($(<"$file"))
+    local index=1
+
+    for text in "${texts[@]}"; do
+        echo "$index: $text"
+        ((index++))
+    done
+}
+
+textman_extract_text() {
+    local file="$1"
+    local texts=($(<"$file"))
+
+    read -p "Choose an index: " choice
+    if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 )) && (( choice <= ${#texts[@]} )); then
+        echo "${texts[choice-1]}"
+    else
+        echo ""
+    fi
+}
+
 textman_choose_text() {
     local file="$1"
     local texts=($(<"$file"))
@@ -12,9 +42,11 @@ textman_choose_text() {
 
     read -p "Choose an index: " choice
     if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 )) && (( choice <= ${#texts[@]} )); then
-        log_info "You chose index $choice: ${texts[choice-1]}"
+        # log_info "You chose index $choice: ${texts[choice-1]}"
+        echo "${texts[choice-1]}"
     else
-        log_info "Invalid choice."
+        # log_info "Invalid choice."
+        echo ""
     fi
 }
 

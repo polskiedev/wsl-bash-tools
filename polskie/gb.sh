@@ -54,6 +54,7 @@ function gbs2() {
     local file_path
     local ext=".txt"
     local branch
+    local switch_branch
 
     if [[ -d "$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE" ]]; then
         log_verbose "Save repository branches directory found."
@@ -88,6 +89,30 @@ function gbs2() {
     fi
 
     if [ "$1" == "-s" ]; then
-        textman_choose_text "$file_path"
+        textman_show_text "$file_path"
+        switch_branch=$(textman_extract_text "$file_path")
+
+        if [ -n "$switch_branch" ]; then
+            while true; do
+                local choice
+                read -p "Do you want to switch to branch \"$switch_branch\"? (y/n) " choice
+                case "$choice" in
+                    [Yy]|[Yy][Ee][Ss])
+                        log_info "Switching to branch: \"$switch_branch\""
+                        # To do: Task
+                        break
+                        ;;
+                    [Nn]|[Nn][Oo])
+                        log_info "No problem!"
+                        break
+                        ;;
+                    *)
+                        log_info "Please enter yes or no."
+                        ;;
+                esac
+            done
+        else
+            log_info "Not interested? Bye!"
+        fi
     fi
 }

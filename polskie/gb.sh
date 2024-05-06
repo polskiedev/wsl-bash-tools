@@ -21,9 +21,13 @@ function gb() {
         output=$(git branch -a | grep -i "$branchName" | sed 's/^* //' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
         IFS=$'\n' read -r -d '' -a branches <<< "$output"
         line_count=$(echo "$output" | wc -l)
-        
 
-        if [ "${#branches[@]}" -eq 0 ]; then
+        if [ "$line_count" -eq 1 ] && [[ -n "$output" ]]; then
+            log_info "Branch checkout: '$output'"
+            git checkout "$output"
+            gbs2
+            return
+        elif [ "${#branches[@]}" -eq 0 ]; then
             log_error "No branches found matching '$branchName'."
             return
         fi
@@ -41,6 +45,7 @@ function gb() {
                 if (( choice >= 1 )) && (( choice <= ${#branches[@]} )); then
                     log_info "Switching to branch: ${branches[choice-1]}"
                     git checkout "${branches[choice-1]}"
+                    gbs2
                     break
                 elif (( choice == 0 )); then
                     log_info "Exiting."

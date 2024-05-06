@@ -10,6 +10,7 @@ if [ -f $env_file ]; then
     source $env_file
 fi
 
+# ⏱🎉📦
 echo "[🔥😆 |💀👻 |✨🧙 |⚛ 🤖]: 💻 $env_text @ $current_date_time"
 
 #Required for setup

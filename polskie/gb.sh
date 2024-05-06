@@ -16,14 +16,17 @@ function gb() {
             log_info "Converting '$1' to '$branchName'"
         fi
         
-        output=$(git branch --list | grep -i "$branchName" | sed 's/^* //' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        output=$(git branch -a | grep -i "$branchName" | sed 's/^* //' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
         line_count=$(echo "$output" | wc -l)
 
         if [ "$line_count" -eq 1 ] && [[ -n "$output" ]]; then
             log_info "Branch checkout: '$output'"
             git checkout "$output"
         else
-            log_error "Unable to continue. There are multiple matches or no matches in branch"
+            log_error "Unable to continue. There are multiple matches or no matches in branch. [$line_count]"
+            log_error "Output: "
+            log_error $output
+            log_error "=========="
             git branch --list | grep -i "$branchName"
         fi
     else

@@ -15,9 +15,11 @@ echo "[🔥😆 |💀👻 |✨🧙 |⚛ 🤖]: 💻 $env_text @ $current_date_ti
 
 #Required for setup
 source ~/polskie/variables.sh
-source ~/polskie/logs.sh
 source ~/polskie/alias.sh
 source ~/polskie/utils.sh
+source ~/polskie/logs.sh
+
+#Maintain no dependencies on each files below
 source ~/polskie/textman.sh
 
 #Git Utils

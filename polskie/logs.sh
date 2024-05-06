@@ -11,13 +11,14 @@ log_error() {
 }
 
 log_debug() {
-    if [ "$DEBUG" = "true" ]; then
+    
+    if [ $(trim_whitespace "$DEBUG") = "true" ]; then
         echo -e "${CLR_YELLOW}[DEBUG]${CLR_RESET} $@" >&2
     fi
 }
 
 log_verbose() {
-    if [ "$SHOW_POLSKIE_VERBOSE_LOGS" = "true" ]; then
+    if [ $(trim_whitespace "$SHOW_POLSKIE_VERBOSE_LOGS") = "true" ]; then
         echo -e "${CLR_YELLOW}[VERBOSE]${CLR_RESET} $@" >&2
     fi
 }

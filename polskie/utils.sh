@@ -50,3 +50,10 @@ check_file_exists() {
         return 1  # File does not exist
     fi
 }
+
+trim_whitespace() {
+    local data="$1"
+    local trimmed_data="${data#"${data%%[![:space:]]*}"}"
+    trimmed_data="${trimmed_data%"${trimmed_data##*[![:space:]]}"}"
+    echo "$trimmed_data"
+}

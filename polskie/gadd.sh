@@ -28,7 +28,7 @@ function gadd() {
                 done
             fi
         else
-            log_error "Matching multiple files, cannot proceed.[$result_count]"
+            log_error "Matching multiple files, cannot proceed. [$result_count]"
             git status | grep -i "$1"
         fi
     else

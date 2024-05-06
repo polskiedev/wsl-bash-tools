@@ -10,25 +10,48 @@ function gb() {
         local branchName=$1
         local output
         local line_count
+        local branches
+        local index
 
         if [[ "$1" =~ ^[0-9]{1,6}$ ]]; then
             branchName="$POLSKIE_BRANCH_PREFIX-$1"
             log_info "Converting '$1' to '$branchName'"
         fi
-        
-        output=$(git branch -a | grep -i "$branchName" | sed 's/^* //' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        line_count=$(echo "$output" | wc -l)
 
-        if [ "$line_count" -eq 1 ] && [[ -n "$output" ]]; then
-            log_info "Branch checkout: '$output'"
-            git checkout "$output"
-        else
-            log_error "Unable to continue. There are multiple matches or no matches in branch. [$line_count]"
-            log_error "Output: "
-            log_error $output
-            log_error "=========="
-            git branch --list | grep -i "$branchName"
+        output=$(git branch -a | grep -i "$branchName" | sed 's/^* //' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        IFS=$'\n' read -r -d '' -a branches <<< "$output"
+        line_count=$(echo "$output" | wc -l)
+        
+
+        if [ "${#branches[@]}" -eq 0 ]; then
+            log_error "No branches found matching '$branchName'."
+            return
         fi
+
+        index=1
+        for branch in "${branches[@]}"; do
+            log_info "[$index] $branch"
+            ((index++))
+        done
+
+        while true; do
+            read -p "Choose an index (0 to exit): " choice
+
+            if [[ "$choice" =~ ^[0-9]+$ ]]; then
+                if (( choice >= 1 )) && (( choice <= ${#branches[@]} )); then
+                    log_info "Switching to branch: ${branches[choice-1]}"
+                    git checkout "${branches[choice-1]}"
+                    break
+                elif (( choice == 0 )); then
+                    log_info "Exiting."
+                    break
+                else
+                    log_error "Invalid index. Please choose again."
+                fi
+            else
+                log_error "Invalid input. Please enter a number."
+            fi
+        done
     else
         log_info $(git branch --show-current)
     fi

@@ -63,8 +63,6 @@ function gb() {
 }
 
 function gbs() {
-    gbs2
-
     if [ "$1" == "-b" ]; then
         if [ -n "$POLSKIE_SAVED_BRANCH" ]; then
             log_info "Checking out saved branch: '$POLSKIE_SAVED_BRANCH'"
@@ -130,7 +128,7 @@ function gbs2() {
                 case "$choice" in
                     [Yy]|[Yy][Ee][Ss])
                         log_info "Switching to branch: \"$switch_branch\""
-                        # To do: Task
+                        gb "$switch_branch"
                         break
                         ;;
                     [Nn]|[Nn][Oo])

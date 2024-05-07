@@ -27,7 +27,7 @@ function gcommit() {
             msg="$ticket_number: $1"
             current_ticket_no="$ticket_number"
         elif [[ "$ticket_number" =~ ^[0-9]{1,6}$ ]]; then
-            ticket_number="$POLSKIE_BRANCH_PREFIX-$ticket_number"
+            ticket_number="$(trim_whitespace "$POLSKIE_BRANCH_PREFIX")-$ticket_number"
             msg="$ticket_number: $1"
             current_ticket_no="$ticket_number"
         else

@@ -14,7 +14,7 @@ function gb() {
         local index
 
         if [[ "$1" =~ ^[0-9]{1,6}$ ]]; then
-            branchName="$POLSKIE_BRANCH_PREFIX-$1"
+            branchName="$(trim_whitespace "$POLSKIE_BRANCH_PREFIX")-$1"
             log_info "Converting '$1' to '$branchName'"
         fi
 
@@ -86,11 +86,11 @@ function gbs() {
     local switch_branch
     local current_branch
 
-    if [[ -d "$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE" ]]; then
+    if [[ -d "$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)" ]]; then
         log_verbose "Save repository branches directory found."
     else
         currdir="$PWD"
-        mkdir "$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE"
+        mkdir "$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)"
         log_verbose "Folder repository branches directory created."
         cd "$currdir"
     fi
@@ -101,7 +101,7 @@ function gbs() {
 
         log_verbose "Current directory is inside a Git repository.${file}"
 
-        file_path="$HOME/$POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE/${file}"
+        file_path="$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)/${file}"
 
         if [[ -f "$file_path" ]]; then
             log_verbose "File exists: $file_path"

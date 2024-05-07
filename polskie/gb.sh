@@ -62,7 +62,7 @@ function gb() {
     fi
 }
 
-function gbs() {
+function gbs2() {
     if [ "$1" == "-b" ]; then
         if [ -n "$POLSKIE_SAVED_BRANCH" ]; then
             log_info "Checking out saved branch: '$POLSKIE_SAVED_BRANCH'"
@@ -78,7 +78,7 @@ function gbs() {
     fi
 }
 
-function gbs2() {
+function gbs() {
     local file
     local file_path
     local ext=".txt"

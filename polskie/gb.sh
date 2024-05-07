@@ -151,6 +151,7 @@ function gbs() {
     else
         current_branch=$(git branch --show-current)
         log_info "Current Branch: \"$current_branch\""
+        log_info "Switched Branches List:"
         textman_show_text "$file_path"
     fi
 }

@@ -4,6 +4,7 @@ function gcommit() {
     local msg
     local current_ticket_no
     local current_ticket_no2
+    local current_branch
     local regex="[[:alnum:]]{2,}-[0-9]{1,6}"
 
     current_branch=$(git branch --show-current)

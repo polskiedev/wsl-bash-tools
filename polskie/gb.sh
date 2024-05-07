@@ -143,5 +143,9 @@ function gbs2() {
         else
             log_info "Not interested? Bye!"
         fi
+    elif [ "$1" == "-l" ]; then
+        textman_show_text "$file_path"
+    else
+        log_info "Unknown command: $1"
     fi
 }

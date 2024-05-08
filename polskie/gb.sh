@@ -130,7 +130,7 @@ function gbs() {
                     case "$choice" in
                         [Yy]|[Yy][Ee][Ss])
                             log_info "Switching to branch: \"$switch_branch\""
-                            gb "$switch_branch"
+                            git checkout "$switch_branch"
                             break
                             ;;
                         [Nn]|[Nn][Oo])

@@ -5,13 +5,33 @@
 
 function gb() {
     if [ -n "$1" ]; then
-        gfp
-
-        local branchName=$1
+        local branchName="$1"
         local output
         local line_count
         local branches
         local index
+        local file=$(gb_saved_repo_branch_file)
+        local current_branch=$(git branch --show-current)
+
+        ### Check first if we can do quick switching
+        textman_check_text "$file" "$branchName"
+
+        if [ $? -eq 1 ]; then
+            if ! [ "$current_branch" = "$branchName" ]; then
+                log_info "Branch '$branchName' already saved in '$file'."
+                log_info "Switching from branch '$current_branch' to '$branchName'"
+                git checkout "$branchName"
+            else
+                log_info "You are already on branch '$branchName'."
+            fi
+
+            log_info "Updating branch..."
+            gfp
+            return
+        fi
+
+        ### Process git switching
+        gfp
 
         if [[ "$1" =~ ^[0-9]{1,6}$ ]]; then
             branchName="$(trim_whitespace "$POLSKIE_BRANCH_PREFIX")-$1"
@@ -23,9 +43,9 @@ function gb() {
         line_count=$(echo "$output" | wc -l)
 
         if [ "$line_count" -eq 1 ] && [[ -n "$output" ]]; then
-            log_info "Branch checkout: '$output'"
+            log_info "Switching to branch: '$output'"
             git checkout "$output"
-            gbs2
+            gbs
             return
         elif [ "${#branches[@]}" -eq 0 ]; then
             log_error "No branches found matching '$branchName'."
@@ -45,7 +65,7 @@ function gb() {
                 if (( choice >= 1 )) && (( choice <= ${#branches[@]} )); then
                     log_info "Switching to branch: ${branches[choice-1]}"
                     git checkout "${branches[choice-1]}"
-                    gbs2
+                    gbs
                     break
                 elif (( choice == 0 )); then
                     log_info "Exiting."
@@ -66,7 +86,7 @@ function gbs2() {
     if [ "$1" == "-b" ]; then
         if [ -n "$POLSKIE_SAVED_BRANCH" ]; then
             log_info "Checking out saved branch: '$POLSKIE_SAVED_BRANCH'"
-            gb "$POLSKIE_SAVED_BRANCH"
+            git checkout "$POLSKIE_SAVED_BRANCH"
         fi
     elif [ "$1" == "-s" ]; then
         if [ -n "$POLSKIE_SAVED_BRANCH" ]; then
@@ -113,7 +133,7 @@ function gbs() {
 
         branch=$(git branch --show-current)
 
-        textman_save_text "$file_path" "$branch"
+        textman_save_text "$file_path" "$branch" --prepend
     else
         log_verbose "Current directory is not inside a Git repository."
     fi
@@ -145,13 +165,30 @@ function gbs() {
             else
                 log_info "Not interested? Bye!"
             fi
+        elif [ "$1" == "-l" ]; then
+            current_branch=$(git branch --show-current)
+            log_info "Current Branch: \"$current_branch\""
+            log_info "Switched Branches List:"
+            textman_show_text "$file_path"
         else
             log_info "Unknown command: $1"
         fi
-    else
-        current_branch=$(git branch --show-current)
-        log_info "Current Branch: \"$current_branch\""
-        log_info "Switched Branches List:"
-        textman_show_text "$file_path"
+    fi
+}
+
+function gb_saved_repo_branch_file() {
+    local file
+    local file_path
+    local ext=".txt"
+
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        file=$(git rev-parse --show-toplevel | xargs basename)
+        file+=$ext
+
+        file_path="$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)/${file}"
+
+        if [[ -f "$file_path" ]]; then
+            echo $file_path
+        fi
     fi
 }

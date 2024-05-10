@@ -54,10 +54,19 @@ textman_choose_text() {
 textman_save_text() {
     local file="$1"
     local text="$2"
+    local option="$3"
 
     if ! grep -qF "$text" "$file"; then
-        echo "$text" >> "$file"
-        log_info "Text '$text' added to '$file'."
+        if [[ "$option" == "--prepend" ]]; then
+            # Create a temporary file for editing
+            tmpfile=$(mktemp)
+            # Prepend text using sed and a temporary file
+            sed "1s/^/$text\n/" "$file" > "$tmpfile" && mv "$tmpfile" "$file"
+            log_info "Text '$text' prepend to '$file'."
+        else
+            echo "$text" >> "$file"
+            log_info "Text '$text' append to '$file'."
+        fi
     else
         log_verbose "Text '$text' already exists in '$file'."
     fi
@@ -75,6 +84,18 @@ textman_remove_text() {
     fi
 }
 
+textman_check_text() {
+    local file="$1"
+    local text_to_check="$2"
+
+    if grep -qF "$text_to_check" "$file"; then
+        log_verbose "Text '$text_to_check' exists in '$file'."
+        return 1  # Return success code
+    else
+        log_verbose "Text '$text_to_check' not found in '$file'."
+        return 0  # Return failure code
+    fi
+}
 
 # Usage examples
 # test_choose_text "list.txt"

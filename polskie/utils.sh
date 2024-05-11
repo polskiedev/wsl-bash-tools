@@ -59,10 +59,34 @@ trim_whitespace() {
 }
 
 to_lower_snake_case() {
+    #Good for creating slugs
     local str="$1"
     # Replace spaces with underscores
     str="${str// /_}"
     # Convert to lowercase
     str="${str,,}"
     echo "$str"
+}
+
+to_lowercase() {
+    local text="$1"
+    echo "$text" | tr '[:upper:]' '[:lower:]'
+}
+
+to_uppercase() {
+    local text="$1"
+    echo "$text" | tr '[:lower:]' '[:upper:]'
+}
+
+transform_text() {
+    local text="$1"
+    local option="$2"
+
+    # Check if the option is -u for uppercase
+    if [ "$option" = "-u" ]; then
+        echo "$text" | tr '[:lower:]' '[:upper:]'
+    else
+        # Default behavior is lowercase
+        echo "$text" | tr '[:upper:]' '[:lower:]'
+    fi
 }

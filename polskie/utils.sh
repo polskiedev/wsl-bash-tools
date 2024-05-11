@@ -57,3 +57,12 @@ trim_whitespace() {
     trimmed_data="${trimmed_data%"${trimmed_data##*[![:space:]]}"}"
     echo "$trimmed_data"
 }
+
+to_lower_snake_case() {
+    local str="$1"
+    # Replace spaces with underscores
+    str="${str// /_}"
+    # Convert to lowercase
+    str="${str,,}"
+    echo "$str"
+}

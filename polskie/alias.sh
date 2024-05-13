@@ -1,5 +1,4 @@
 #!/bin/bash
-alias nb='nblocal'
 alias lf="ls -al | grep $1"
 
 alias gfp='git fetch;git pull'

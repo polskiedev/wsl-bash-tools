@@ -56,21 +56,22 @@ textman_save_text() {
     local text="$2"
     local option="$3"
 
+    # echo "textman_save_text $file $text $option"
+
     if ! grep -qF "$text" "$file"; then
         if [[ "$option" == "--prepend" ]]; then
-            # Create a temporary file for editing
             tmpfile=$(mktemp)
-            # Prepend text using sed and a temporary file
-            sed "1s/^/$text\n/" "$file" > "$tmpfile" && mv "$tmpfile" "$file"
-            log_info "Text '$text' prepend to '$file'."
+            { echo "$text"; cat "$file"; } > "$tmpfile" && mv "$tmpfile" "$file"
+            log_info "Text '$text' prepended to '$file'."
         else
             echo "$text" >> "$file"
-            log_info "Text '$text' append to '$file'."
+            log_info "Text '$text' appended to '$file'."
         fi
     else
         log_verbose "Text '$text' already exists in '$file'."
     fi
 }
+
 
 textman_remove_text() {
     local file="$1"

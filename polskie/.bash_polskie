@@ -28,17 +28,20 @@ source ~/polskie/gb.sh
 source ~/polskie/gadd.sh
 source ~/polskie/gcommit.sh
 source ~/polskie/gmerge.sh
-
+source ~/polskie/polskie_man.sh
 # ##########################################################
 # Load project scripts
 projects_setup_file="$HOME/polskie/projects/projects.sh"
 writefile="$HOME/polskie/project_scripts.txt"
+writefiledocs="$HOME/polskie/project_scripts_docs.txt"
 
 log_verbose "Checking projects..."
 if [ -f $projects_setup_file ]; then
     log_verbose "Loading projects: $projects_setup_file"
-    . $projects_setup_file "$writefile"
+    . $projects_setup_file "$writefile" "$writefiledocs"
 fi
+
+polskie_man_write "$writefiledocs"
 
 while IFS= read -r script; do
     if [ -f $projects_setup_file ]; then
@@ -51,6 +54,9 @@ done < "$writefile"
 # Get script output
 log_verbose "Copy output: " "$writefile" "$HOME/wsl-bash-tools/output/"
 cp "$writefile" "$HOME/wsl-bash-tools/output/"
+
+log_verbose "Copy docs output: " "$writefiledocs" "$HOME/wsl-bash-tools/output/"
+cp "$writefiledocs" "$HOME/wsl-bash-tools/output/"
 # ##########################################################
 # Quick helper
 alias sp='source ~/polskie/.bash_polskie'

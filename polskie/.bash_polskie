@@ -20,6 +20,7 @@ source ~/polskie/utils.sh
 source ~/polskie/logs.sh
 
 #Maintain no dependencies on each files below
+source ~/polskie/cd.sh
 source ~/polskie/textman.sh
 
 #Git Utils

@@ -13,9 +13,23 @@ cd() {
         command cd "$@"
     elif [ "$#" -eq 2 ]; then
         log_verbose "cd: Two argument passed."
-        command cd "$2"
+        case "$1" in
+            "-sp")
+                log_verbose "cd: -sp. Entering override mode."
+                cdp "$2"
+                ;;
+            "-sn")
+                log_verbose "cd: -sn. Entering override mode."
+                cdn "$2"
+                ;;
+            *)
+                command cd "$@"
+                ;;
+        esac
+        
     else
-        echo "More than one argument passed."
+        log_verbose "More than one argument passed."
+        command cd "$@"
     fi
     # Call the actual 'cd' command
     #  command cd "$@"

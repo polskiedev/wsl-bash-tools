@@ -9,3 +9,7 @@ CLR_RESET="\e[0m"  # Reset to default color
 
 # Text formating variables
 TEXT_BOLD="\e[1m"
+
+# Others
+LINK_START="\e]8;;"
+LINK_END="\a\e]8;;\a"

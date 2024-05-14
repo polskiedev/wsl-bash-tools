@@ -89,7 +89,7 @@ textman_check_text() {
     local file="$1"
     local text_to_check="$2"
 
-    if grep -qF "$text_to_check" "$file"; then
+    if grep -qwF "$text_to_check" "$file"; then
         log_verbose "Text '$text_to_check' exists in '$file'."
         return 1  # Return success code
     else

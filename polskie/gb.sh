@@ -14,20 +14,24 @@ function gb() {
         local current_branch=$(git branch --show-current)
 
         ### Check first if we can do quick switching
+        log_debug "textman_check_text \"$file\" \"$branchName\""
         textman_check_text "$file" "$branchName"
 
         if [ $? -eq 1 ]; then
+            log_debug "'$branchName' found on '$file'"
             if ! [ "$current_branch" = "$branchName" ]; then
                 log_info "Branch '$branchName' already saved in '$file'."
                 log_info "Switching from branch '$current_branch' to '$branchName'"
                 git checkout "$branchName"
+
+                log_info "Updating branch..."
+                gfp
+                return
             else
                 log_info "You are already on branch '$branchName'."
             fi
-
-            log_info "Updating branch..."
-            gfp
-            return
+        else
+            log_debug "'$branchName' not found on '$file'"
         fi
 
         ### Process git switching

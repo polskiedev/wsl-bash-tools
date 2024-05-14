@@ -90,3 +90,10 @@ transform_text() {
         echo "$text" | tr '[:upper:]' '[:lower:]'
     fi
 }
+
+capitalize_first_letter() {
+    local str="$1"
+    local first_letter="${str:0:1}"
+    local rest="${str:1}"
+    echo "${first_letter^}$rest"
+}

@@ -19,19 +19,19 @@ function gcommit() {
 
     log_info "Current Ticket No: \"$current_ticket_no\""
     if [ -n "$current_ticket_no" ]; then
-        msg="$current_ticket_no: $1"
+        msg="$current_ticket_no: $(capitalize_first_letter "$1")"
     else
         read -p "Enter the ticket number: " ticket_number
 
         if [[ "$ticket_number" =~ ^[[:alnum:]]{2,}-[0-9]{1,6}$ ]]; then
-            msg="$ticket_number: $1"
+            msg="$ticket_number: $(capitalize_first_letter "$1")"
             current_ticket_no="$ticket_number"
         elif [[ "$ticket_number" =~ ^[0-9]{1,6}$ ]]; then
             ticket_number="$(trim_whitespace "$POLSKIE_BRANCH_PREFIX")-$ticket_number"
-            msg="$ticket_number: $1"
+            msg="$ticket_number: $(capitalize_first_letter "$1")"
             current_ticket_no="$ticket_number"
         else
-            msg="$1"
+            msg="$(capitalize_first_letter "$1")"
         fi
     fi
 

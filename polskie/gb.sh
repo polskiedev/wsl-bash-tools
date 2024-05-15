@@ -113,7 +113,7 @@ function gbs() {
     if [[ -d "$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)" ]]; then
         log_verbose "Save repository branches directory found."
     else
-        currdir="$PWD"
+        currdir="$(pwd)"
         mkdir "$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)"
         log_verbose "Folder repository branches directory created."
         cd "$currdir"
@@ -196,3 +196,26 @@ function gb_saved_repo_branch_file() {
         fi
     fi
 }
+
+# Define the completion function
+_switch_gb_autocomplete() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local file=$(gb_saved_repo_branch_file)
+    local matchingStrings=()
+    
+    cur="${cur//nb-/NB-}"
+    while IFS= read -r line; do
+        # Check if the line matches the text to check
+        if [[ $line == *"$cur"* ]]; then        
+           matchingStrings+=("$line")
+        fi
+    done < "$file"
+
+    # printf '%s\n' "${matchingStrings[@]}"
+
+    # COMPREPLY=($(compgen -W "${matchingStrings[*]}" -- "$cur"))
+    COMPREPLY=("${matchingStrings[@]}")
+}
+
+# Register the completion function
+complete -F _switch_gb_autocomplete gb

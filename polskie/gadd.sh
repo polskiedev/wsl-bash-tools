@@ -40,9 +40,10 @@ function gadd() {
         # Check if there are modified files
         if [ "${#modified_files[@]}" -gt 0 ]; then
             str_modified_files="$([[ "$num_modified_files" -gt 1 ]] && echo "Files found: $num_modified_files. ")"
+            log_info "Current Branch: $(git branch --show-current)"
             log_info "${str_modified_files}Processing git modified files only..."
-            log_info "Execute: git status --short"
-            echo "$cr"
+            # log_info "Execute: git status --short"
+            # echo "$cr"
             log_info "Please select file to add:"
 
             local counter=0

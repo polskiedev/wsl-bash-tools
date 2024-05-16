@@ -1,8 +1,8 @@
 #!/bin/bash
 
-log_verbose "File: cd.sh"
+log_verbose "File: override.cd.sh"
 
-cd() {
+override_cd() {
     # Your custom code herea
     log_verbose "cd: Custom cd function is running..."
 

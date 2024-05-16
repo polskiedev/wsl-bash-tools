@@ -1,7 +1,8 @@
 #!/bin/bash
-# Override git command to log successful checkouts
+log_verbose "File: override.git.sh"
 
-git() {
+# Override git command to log successful checkouts
+override_git() {
     if [[ "$1" == "checkout" ]]; then
         # Capture the branch name
         branch="$2"

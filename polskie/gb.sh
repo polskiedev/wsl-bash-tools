@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# To do
-# - If search results to multiple files. Display results with index, ask what branch (by index) he needs 
-
 function gb() {
     if [ -n "$1" ]; then
         local branchName="$1"
@@ -14,7 +11,7 @@ function gb() {
         local current_branch=$(git branch --show-current)
 
         ### Check first if we can do quick switching
-        log_debug "textman_check_text \"$file\" \"$branchName\""
+        # log_debug "textman_check_text \"$file\" \"$branchName\""
         textman_check_text "$file" "$branchName"
 
         if [ $? -eq 1 ]; then

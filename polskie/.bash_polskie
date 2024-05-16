@@ -29,6 +29,7 @@ source ~/polskie/gb.sh
 source ~/polskie/gadd.sh
 source ~/polskie/gcommit.sh
 source ~/polskie/gmerge.sh
+source ~/polskie/override.git.sh
 source ~/polskie/polskie_man.sh
 # ##########################################################
 # Load project scripts

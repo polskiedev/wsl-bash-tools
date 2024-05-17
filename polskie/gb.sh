@@ -26,6 +26,7 @@ function gb() {
                 return
             else
                 log_info "You are already on branch '$branchName'."
+                return
             fi
         else
             log_debug "'$branchName' not found on '$file'"

@@ -62,6 +62,7 @@ textman_save_text() {
         if [[ "$option" == "--prepend" ]]; then
             tmpfile=$(mktemp)
             { echo "$text"; cat "$file"; } > "$tmpfile" && mv "$tmpfile" "$file"
+            rm -f "$tmpfile"  # Delete the temporary file
             log_info "Text '$text' prepended to '$file'."
         else
             echo "$text" >> "$file"

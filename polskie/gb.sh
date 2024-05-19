@@ -107,23 +107,26 @@ function gbs() {
     local branch
     local switch_branch
     local current_branch
+    local folder_path="$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)"
 
-    if [[ -d "$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)" ]]; then
+    if [[ -d "$folder_path" ]]; then
         log_verbose "Save repository branches directory found."
     else
         currdir="$(pwd)"
-        mkdir "$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)"
+        mkdir "$folder_path"
         log_verbose "Folder repository branches directory created."
         cd "$currdir"
     fi
 
     if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-        file=$(git rev-parse --show-toplevel | xargs basename)
+        file="branches."
+        file+=$(git rev-parse --show-toplevel | xargs basename)
         file+=$ext
 
-        log_verbose "Current directory is inside a Git repository.${file}"
+        log_verbose "Current directory is inside a Git repository."
+        log_verbose "Creating save file for repository: ${file}"
 
-        file_path="$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)/${file}"
+        file_path="$folder_path/${file}"
 
         if [[ -f "$file_path" ]]; then
             log_verbose "File exists: $file_path"
@@ -184,7 +187,8 @@ function gb_saved_repo_branch_file() {
     local ext=".txt"
 
     if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-        file=$(git rev-parse --show-toplevel | xargs basename)
+        file="branches."
+        file+=$(git rev-parse --show-toplevel | xargs basename)
         file+=$ext
 
         file_path="$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)/${file}"

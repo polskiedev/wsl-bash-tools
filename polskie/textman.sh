@@ -54,7 +54,8 @@ textman_choose_text() {
 textman_save_text() {
     local file="$1"
     local text="$2"
-    local option="$3"
+    local option="${3:---append}"
+    local quiet_mode="${4:---quiet}"
 
     # echo "textman_save_text $file $text $option"
 
@@ -63,10 +64,14 @@ textman_save_text() {
             tmpfile=$(mktemp)
             { echo "$text"; cat "$file"; } > "$tmpfile" && mv "$tmpfile" "$file"
             rm -f "$tmpfile"  # Delete the temporary file
-            log_info "Text '$text' prepended to '$file'."
+            if ! [ "$quiet_mode" == "--quiet" ]; then
+                log_info "Text '$text' prepended to '$file'."
+            fi
         else
             echo "$text" >> "$file"
-            log_info "Text '$text' appended to '$file'."
+            if ! [ "$quiet_mode" == "--quiet" ]; then
+                log_info "Text '$text' appended to '$file'."
+            fi
         fi
     else
         log_verbose "Text '$text' already exists in '$file'."

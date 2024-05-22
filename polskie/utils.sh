@@ -137,3 +137,20 @@ reverse_array() {
     # echo "Reversed array: ${reversed_array[@]}"
 }
 
+highlight_string() {
+    local substring="$1"
+    local text="$2"
+
+    # ANSI escape codes for bold and red text
+    local bold_red='\033[1;31m'
+    local reset='\033[0m'
+
+    # Replace the substring with the highlighted version using awk
+    highlighted_text=$(awk -v s="$substring" -v br="$bold_red" -v rs="$reset" '{
+        gsub(s, br s rs);
+        print;
+    }' <<< "$text")
+
+    # Print the highlighted text
+    echo -e "$highlighted_text"
+}

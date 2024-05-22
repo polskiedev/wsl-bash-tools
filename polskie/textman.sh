@@ -91,6 +91,7 @@ textman_remove_text() {
     fi
 }
 
+# Unused???
 textman_check_text_grep() {
     local file="$1"
     local text_to_check="$2"
@@ -119,6 +120,25 @@ textman_check_text() {
     done < "$file"
 
     return 0  # Return failure code1
+}
+
+textman_get_matched_pattern_in_text() {
+    local file="$1"
+    local pattern="$2"
+    local matches=()
+
+    while IFS= read -r line; do
+        # Check if the line matches the pattern
+        if [[ "$line" =~ $pattern ]]; then
+            matches+=("$line")
+        fi
+    done < "$file"
+
+    # Return the matches array
+    # echo "${matches[@]}"
+
+    # Print the matches array as newline-separated values
+    printf '%s\n' "${matches[@]}"
 }
 
 # Usage examples

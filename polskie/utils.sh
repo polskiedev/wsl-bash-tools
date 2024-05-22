@@ -115,28 +115,6 @@ urlencode() {
     echo "$encoded_string"
 }
 
-reverse_array() {
-    local original_array=("$@")
-    local reversed_string=""
-    local i
-
-    for (( i=${#original_array[@]}-1; i>=0; i-- )); do
-        reversed_string+="${original_array[i]}|"
-    done
-
-    # Remove the trailing '|'
-    reversed_string="${reversed_string%|}"
-    echo "$reversed_string"
-
-    # # Example usage
-    # original_array=("one" "two" "three" "four" "five")
-    # reversed_string=$(reverse_array "${original_array[@]}")
-    # IFS='|' read -r -a reversed_array <<< "$reversed_string"
-
-    # echo "Original array: ${original_array[@]}"
-    # echo "Reversed array: ${reversed_array[@]}"
-}
-
 highlight_string() {
     local substring="$1"
     local text="$2"

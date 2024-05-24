@@ -198,3 +198,11 @@ function gb_saved_repo_branch_file() {
         fi
     fi
 }
+
+function gb_git_status() {
+    local current_branch=$(git branch --show-current)
+    local msg="Current Branch: \"$current_branch\""
+    log_info "$(highlight_string "$current_branch" "$msg" "green")"
+    
+    git status
+}

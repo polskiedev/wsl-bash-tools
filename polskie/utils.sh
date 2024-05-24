@@ -118,13 +118,25 @@ urlencode() {
 highlight_string() {
     local substring="$1"
     local text="$2"
-
-    # ANSI escape codes for bold and red text
-    local bold_red='\033[1;31m'
+    local style="${3:-red}"
+    local branch
+    # ANSI escape codes
+    local bold_yellow="\033[1;33m"     # ANSI escape code for bold yellow
+    local bold_green="\033[1;32m"      # ANSI escape code for bold green
+    local bold_red="\033[1;31m"        # ANSI escape code for bold red
+    local bold_white="\033[1;37m"   
     local reset='\033[0m'
 
+    case "$style" in
+        "red") br="$bold_red";;
+        "yellow") br="$bold_yellow";;
+        "green") br="$bold_green";;
+        "white") br="$bold_white";;
+        *) br="$bold_red";;
+    esac
+
     # Replace the substring with the highlighted version using awk
-    highlighted_text=$(awk -v s="$substring" -v br="$bold_red" -v rs="$reset" '{
+    highlighted_text=$(awk -v s="$substring" -v br="$br" -v rs="$reset" '{
         gsub(s, br s rs);
         print;
     }' <<< "$text")

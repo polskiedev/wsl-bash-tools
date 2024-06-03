@@ -58,14 +58,53 @@ trim_whitespace() {
     echo "$trimmed_data"
 }
 
+# Function to check if a string is snake_case
+is_snake_case() {
+    [[ "$1" =~ ^[a-z0-9_]+$ ]]
+}
+
+# Function to check if a string is camelCase
+is_camel_case() {
+    [[ "$1" =~ ^[a-z]+([A-Z][a-z0-9]+)*$ ]]
+}
+
 to_lower_snake_case() {
     #Good for creating slugs
     local str="$1"
     # Replace spaces with underscores
     str="${str// /_}"
+    # Replace uppercase letters with underscore followed by lowercase letter
+    str="$(echo "$str" | sed -r 's/([A-Z])/_\L\1/g')"
+    # Remove leading underscore if it exists
+    str="${str#_}"
     # Convert to lowercase
-    str="${str,,}"
+    # str="${str,,}"
     echo "$str"
+}
+
+to_lower_camel_case() {
+    local input=$1
+    local camel_case=$(to_camel_case "$input")
+    echo "${camel_case,}"  # Convert first letter to lowercase
+}
+
+# Function to convert underscore_case to camelCase
+to_camel_case() {
+    local input=$1
+    local result=""
+
+    while IFS="_" read -r f1 f2; do
+        if [ -z "$result" ]; then
+            result="$f1"
+        else
+            result="${result}$(tr '[:lower:]' '[:upper:]' <<< ${f1:0:1})${f1:1}"
+        fi
+        if [ -n "$f2" ]; then
+            result="${result}$(tr '[:lower:]' '[:upper:]' <<< ${f2:0:1})${f2:1}"
+        fi
+    done <<< "$input"
+
+    echo "$result"
 }
 
 to_lowercase() {

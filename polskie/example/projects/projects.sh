@@ -8,6 +8,7 @@ function load_wsl_polskie_projects() {
     if [ -f "$writefile" ]; then
         log_verbose "File '$writefile' already exists. Overwriting..."
         > "$writefile"  # Overwrite the existing file with an empty content
+        # truncate -s 0 "$writefile"
     else
         touch "$writefile"  # Create a new blank file
     fi

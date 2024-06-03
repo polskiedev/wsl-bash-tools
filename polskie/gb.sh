@@ -184,16 +184,20 @@ function gbs() {
 function gb_saved_repo_branch_file() {
     local file
     local file_path
+    local stub="$1"
+    local validate="${2:--validate}"
     local ext=".txt"
 
     if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
         file="branches."
         file+=$(git rev-parse --show-toplevel | xargs basename)
+        if [ -n "$stub" ]; then
+            file+="$stub"
+        fi
         file+=$ext
 
         file_path="$HOME/$(trim_whitespace $POLSKIE_SAVED_REPOSITORY_BRANCHES_SOURCE)/${file}"
-
-        if [[ -f "$file_path" ]]; then
+        if [[ "$validate" == "-validate" && -f "$file_path" ]] || [ "$validate" == "-no-validate" ]; then
             echo $file_path
         fi
     fi
@@ -205,4 +209,14 @@ function gb_git_status() {
     log_info "$(highlight_string "$current_branch" "$msg" "green")"
     
     git status
+}
+
+function gb_get_previous_branch() {
+    local file=$(gb_saved_repo_branch_file ".previous" -no-validate)
+    local line_count=$(wc -l < "$file")
+    
+    if [[ "$line_count" -eq 1 ]]; then
+        log_info "Previous Branch: $(cat "$file")"
+    fi
+
 }

@@ -10,6 +10,13 @@ function gb() {
         local file=$(gb_saved_repo_branch_file)
         local current_branch=$(git branch --show-current)
 
+		if [ "$branchName" == "-" ]; then
+			log_verbose "Loading previous branch..."
+			# This command is from a project override
+			git checkout -
+			return
+		fi
+
         ### Check first if we can do quick switching
         # log_debug "textman_check_text \"$file\" \"$branchName\""
         textman_check_text "$file" "$branchName"

@@ -43,6 +43,23 @@ function gcommit() {
             [Yy]|[Yy][Ee][Ss])
                 log_info "git commit -m \"$msg\""
                 git commit -m "$msg"
+					while true; do
+						local last_question
+						read -p "Do you want to push changes you've made? (y/n) " confirm_commit
+						case "$confirm_commit" in
+							[Yy]|[Yy][Ee][Ss])
+								gpush
+								break
+								;;
+							[Nn]|[Nn][Oo])
+								log_info "No problem!"
+								break
+								;;
+							*)
+								log_info "Please enter yes or no."
+								;;
+						esac
+					done
                 break
                 ;;
             [Nn]|[Nn][Oo])

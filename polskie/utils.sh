@@ -183,3 +183,18 @@ highlight_string() {
     # Print the highlighted text
     echo -e "$highlighted_text"
 }
+
+slugify() {
+    local input="$1"
+    # Convert to lowercase
+    local lower=$(echo "$input" | tr '[:upper:]' '[:lower:]')
+    # Replace spaces with dashes
+    local no_spaces=$(echo "$lower" | tr ' ' '-')
+    # Remove all non-word characters except for dashes
+    local cleaned=$(echo "$no_spaces" | sed 's/[^a-z0-9-]//g')
+    # Replace multiple dashes with a single dash
+    local single_dash=$(echo "$cleaned" | tr -s '-')
+    # Trim dashes from the start and end of the text
+    local trimmed=$(echo "$single_dash" | sed 's/^-//;s/-$//')
+    echo "$trimmed"
+}

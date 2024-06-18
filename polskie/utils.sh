@@ -190,8 +190,8 @@ slugify() {
     local lower=$(echo "$input" | tr '[:upper:]' '[:lower:]')
     # Replace spaces with dashes
     local no_spaces=$(echo "$lower" | tr ' ' '-')
-    # Remove all non-word characters except for dashes
-    local cleaned=$(echo "$no_spaces" | sed 's/[^a-z0-9-]//g')
+    # Remove all characters except lowercase letters, digits, dashes, and underscores
+    local cleaned=$(echo "$no_spaces" | sed 's/[^a-z0-9_\-]//g')
     # Replace multiple dashes with a single dash
     local single_dash=$(echo "$cleaned" | tr -s '-')
     # Trim dashes from the start and end of the text

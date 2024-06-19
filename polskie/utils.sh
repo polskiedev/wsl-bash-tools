@@ -198,3 +198,122 @@ slugify() {
     local trimmed=$(echo "$single_dash" | sed 's/^-//;s/-$//')
     echo "$trimmed"
 }
+
+generate_hash() {
+  echo $(date +%s%N | sha256sum | base64 | head -c 8)
+}
+
+humanized_datetime() {
+    local current_datetime=$(date +"%Y%m%d_%I%M%p" | sed 's/AM/am/' | sed 's/PM/pm/')
+    echo $current_datetime
+}
+
+rename_dt() {
+    # Original filename (example)
+    local original_file="$1"
+    local no_hash=${2:-false}
+    local temp_hash=""
+
+    # Get the current datetime in the format YYYYMMDD_HHMMSS
+    # current_datetime=$(date +"%Y%m%d_%H%M%S")
+    # current_datetime=$(date +"%F %T")
+    local current_datetime=$(humanized_datetime)
+
+    # Generate a temporary hash
+    if [ "$no_hash" = false ]; then
+        temp_hash="_$(generate_hash)"
+    fi
+
+    # Extract the file extension
+    local file_extension="${original_file##*.}"
+
+    # Extract the filename without the extension
+    local file_name="${original_file%.*}"
+
+    # Construct the new filename
+    local new_file="${file_name}_${current_datetime}${temp_hash}.${file_extension}"
+
+    # Rename the file
+    mv "$original_file" "$new_file"
+
+    echo "File renamed from '$original_file' to '$new_file'"
+}
+
+# Todo: Validation not working AOTM, zipping a lot of sub folders
+backup_dt() {
+    # Check if the correct number of arguments is provided
+    # if [ $# -ge 2 ]; then
+    #     echo "Usage: backup_dt <source_folder> <destination_folder>"
+    #     return
+    # fi
+
+    # Source folder to zip
+    local source_folder="/path/to/source_folder"
+    source_folder="$1"
+
+    local source_real=$(realpath "$source_folder")
+
+    # Destination folder for the zip file
+    local destination_folder="/path/to/destination_folder"
+
+    # Get the current datetime in the desired format (YYYYMMDD_HHMM)
+    local current_datetime=$(humanized_datetime)
+
+    # Extract the last component of the source folder path (folder or file name)
+    local source_name=$(basename "$source_folder")
+
+    # Get the parent directory of the source folder
+    local parent_dir=$(dirname "$source_folder")
+
+    local filename=$(basename --suffix=".${source_folder##*.}" "$source_folder")
+
+    # Extract the file extension
+    local file_extension="${source_folder##*.}"
+
+    local slug=""
+    if [ -n "$3" ]; then
+        slug="_$(slugify "$3")"
+    fi
+
+    # Create the zip filename with datetime
+    local zip_filename="backup_${source_name}_${current_datetime}${slug}.zip"
+
+    # Check if the source path is a directory or a file
+    local source_type
+    if [ -d "$source_real" ]; then
+        # Source is a directory
+        source_type="directory"
+    elif [ -f "$source_real" ]; then
+        # Source is a file
+        source_type="file"
+        zip_filename="backup_${filename}_${current_datetime}${slug}.zip"
+    else
+        echo "Error: Source is neither a file nor a directory."
+        return
+    fi
+
+    destination_folder="$(realpath "$parent_dir")"
+    if [ "$2" != "." ]; then
+        destination_folder="$(realpath "$2")"
+    fi
+    
+    # echo "current_folder: $PWD"
+    # echo "source_folder: $source_folder"
+    # echo "source_name: $source_name"
+    # echo "parent_dir: $parent_dir"
+    # echo "source_type: $source_type"
+    # echo "filename: $filename"
+    # echo "file_extension: $file_extension"
+    # echo "source_folder_real: $source_real"
+    # echo "real_parent: $(realpath "$parent_dir")"
+
+    # local currdir="$PWD"
+    # cd "$parent_dir"
+    # echo "cd '$parent_dir'"
+
+    # Zip the source folder
+    zip -r "$zip_filename" "$source_folder"
+    # cd "$currdir"
+
+    echo "'$source_folder' zipped and saved to '$destination_folder/$zip_filename'"
+}

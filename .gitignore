@@ -10,5 +10,7 @@ polskie/.env
 .env
 .ignore/
 .local/
+.symlinks/
+.output/
 output/
 polskie/projects/

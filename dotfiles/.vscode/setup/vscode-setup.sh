@@ -25,7 +25,7 @@ filename="settings.json";
 wslVscodeSettingsJsonFile="$HOME/.vscode-server/data/Machine/$filename"
 dotFileVscodeSettingsJsonFile="$dotFilesDir/.vscode/config/$filename"
 winVscodeSettingsJsonFile="$winAppDataDir/Roaming/Code/User/$filename"
-symlinkVscodeSettingsJsonFile="$dotFilesDir/.vscode/symlinks/$filename"
+symlinkVscodeSettingsJsonFile="$dotFilesDir/.vscode/.symlinks/$filename"
 
 if [ -f $winVscodeSettingsJsonFile ]; then
     echo "Deleting vscode $filename"
@@ -44,7 +44,7 @@ filename="keybindings.json";
 wslVscodeKeybindingsJsonFile="$HOME/.vscode-server/data/Machine/$filename"
 dotFileVscodeKeybindingsJsonFile="$dotFilesDir/.vscode/config/$filename"
 winVscodeKeybindingsJsonFile="$winAppDataDir/Roaming/Code/User/$filename"
-symlinkVscodeKeybindingsJsonFile="$dotFilesDir/.vscode/symlinks/$filename"
+symlinkVscodeKeybindingsJsonFile="$dotFilesDir/.vscode/.symlinks/$filename"
 
 if [ -f $winVscodeKeybindingsJsonFile ]; then
     echo "Deleting vscode $filename"

@@ -9,5 +9,6 @@ polskie/.env
 *.env
 .env
 .ignore/
+.local/
 output/
 polskie/projects/
